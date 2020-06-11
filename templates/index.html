@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Zero Day Zapper!{% endblock %}
+
+{% block content %}
+
+    <div class="form-group">
+        <form action="/success" method="post" enctype="multipart/form-data">
+            <label for="file-upload-form">Upload your, hopefully-not ;-), malicious file</label>
+            <input type="file" class="form-control-file" id="file-upload-form" name="file"/>
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+
+{% endblock %}
