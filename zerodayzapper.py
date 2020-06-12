@@ -7,6 +7,8 @@ UPLOAD_FOLDER = '/var/www/html/zerodayzapper/uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# The following isn't used for security, this is just to enable flash messages
+app.secret_key = 'supersecretk3y'
 
 
 # def allowed_file(filename):
@@ -30,8 +32,8 @@ def upload_file():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
+            return render_template('uploads.html')
+
     return render_template('index.html')
 
 

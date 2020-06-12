@@ -29,6 +29,24 @@
     </nav>
 </header>
 
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <section class="container-fluid main-content mt-3">
+            <div class="row flash-row">
+                <div class="col-12">
+                    <div id="flash-message-main" class="alert alert-danger flashes" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endwith %}
+
+
 <section class="container-fluid main-content mt-3">
     {% block content %} {% endblock %}
 </section>
