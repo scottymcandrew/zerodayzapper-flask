@@ -49,7 +49,7 @@ def list_uploaded_files():
 @app.route('/uploads/tidy-files')
 def tidy_files():
     for filename in os.listdir(UPLOAD_FOLDER):
-        os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + filename + ".exe")
+        os.rename(UPLOAD_FOLDER + '/' + filename, UPLOAD_FOLDER + '/' + filename + ".exe")
 
     return redirect(url_for('list_uploaded_files'))
 
