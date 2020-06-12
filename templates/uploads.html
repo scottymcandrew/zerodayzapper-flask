@@ -4,9 +4,10 @@
 
 {% block content %}
 
+    <h2>Here are the current list of files that have been uploaded</h2>
+
     <ul class="list-group list-group-flush">
         {% for filename in list_of_files %}
-
             <li class="list-group-item">{{ filename }}</li>
         {% endfor %}
     </ul>

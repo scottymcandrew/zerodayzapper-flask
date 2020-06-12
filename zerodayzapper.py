@@ -40,8 +40,7 @@ def list_uploaded_files():
     list_of_files = {}
     for filename in os.listdir(UPLOAD_FOLDER):
         # list_of_files[filename] = "http://web.zerdayzapper.com/uploads/" + filename
-        list_of_files[filename] = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-        print(list_of_files)
+        list_of_files[filename] = "http://web.zerodayzapper.com/uploads/" + send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
     return render_template('uploads.html', list_of_files=list_of_files)
 
