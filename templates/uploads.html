@@ -4,10 +4,11 @@
 
 {% block content %}
 
-    {% for filename in list_of_files %}
-        <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush">
+        {% for filename in list_of_files %}
+
             <li class="list-group-item"></li>
-        </ul>
-    {% endfor %}
+        {% endfor %}
+    </ul>
 
 {% endblock %}
