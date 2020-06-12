@@ -43,7 +43,7 @@ def list_uploaded_files():
         list_of_files[filename] = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
         print(list_of_files)
 
-    return render_template('uploads.html', list_of_files)
+    return render_template('uploads.html', list_of_files=list_of_files)
 
 
 @app.route('/uploads/<filename>')
