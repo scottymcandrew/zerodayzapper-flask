@@ -46,6 +46,14 @@ def list_uploaded_files():
     return render_template('uploads.html', list_of_files=list_of_files)
 
 
+@app.route('/uploads/tidy-files')
+def tidy_files():
+    for filename in os.listdir(UPLOAD_FOLDER):
+        os.rename(filename, filename + ".exe")
+
+    return redirect(url_for('list_uploaded_files'))
+
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
