@@ -5,8 +5,10 @@
 {% block content %}
 
     <h2>Here are the current list of files that have been uploaded</h2>
+    <br>
 
     <a href="{{ url_for('exe_files') }}" class="btn btn-primary" role="button">Add EXE to files</a>
+    <a href="{{ url_for('delete_files') }}" class="btn btn-danger" role="button">Delete ALL files</a>
 
     <ul class="list-group list-group-flush">
         {% for filename in list_of_files %}

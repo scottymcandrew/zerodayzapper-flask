@@ -54,6 +54,14 @@ def exe_files():
     return redirect(url_for('list_uploaded_files'))
 
 
+@app.route('/uploads/delete-files')
+def delete_files():
+    for filename in os.listdir(UPLOAD_FOLDER):
+        os.remove(filename)
+
+    return redirect(url_for('list_uploaded_files'))
+
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
