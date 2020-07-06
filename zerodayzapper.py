@@ -46,8 +46,8 @@ def list_uploaded_files():
     return render_template('uploads.html', list_of_files=list_of_files)
 
 
-@app.route('/uploads/tidy-files')
-def tidy_files():
+@app.route('/uploads/exe-files')
+def exe_files():
     for filename in os.listdir(UPLOAD_FOLDER):
         os.rename(UPLOAD_FOLDER + '/' + filename, UPLOAD_FOLDER + '/' + filename + ".exe")
 
