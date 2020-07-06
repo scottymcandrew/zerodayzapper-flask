@@ -57,7 +57,7 @@ def exe_files():
 @app.route('/uploads/delete-files')
 def delete_files():
     for filename in os.listdir(UPLOAD_FOLDER):
-        os.remove(filename)
+        os.remove(UPLOAD_FOLDER + '/' + filename)
 
     return redirect(url_for('list_uploaded_files'))
 
