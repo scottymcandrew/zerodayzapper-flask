@@ -7,6 +7,7 @@ UPLOAD_FOLDER = '/var/www/html/zerodayzapper/uploads'
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'exe', ''}
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # The following isn't used for security, this is just to enable flash messages
 app.secret_key = 'supersecretk3y'
