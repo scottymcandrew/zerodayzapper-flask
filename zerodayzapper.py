@@ -58,7 +58,7 @@ def exe_files():
 def mutate_files():
     for filename in os.listdir(UPLOAD_FOLDER):
         # Append to binary file
-        f = open(filename, "ab")
+        f = open(UPLOAD_FOLDER + '/' + filename, "ab")
         f.write("AdditionalStuff")
         f.close()
 
