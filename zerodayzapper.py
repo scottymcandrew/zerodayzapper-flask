@@ -54,6 +54,15 @@ def exe_files():
     return redirect(url_for('list_uploaded_files'))
 
 
+@app.route('/uploads/mutate-files')
+def mutate_files():
+    for filename in os.listdir(UPLOAD_FOLDER):
+        # Append to binary file
+        f = open(filename, "ab")
+        f.write("AdditionalStuff")
+        f.close()
+
+
 @app.route('/uploads/delete-files')
 def delete_files():
     for filename in os.listdir(UPLOAD_FOLDER):
