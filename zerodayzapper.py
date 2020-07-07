@@ -58,9 +58,11 @@ def exe_files():
 def mutate_files():
     for filename in os.listdir(UPLOAD_FOLDER):
         # Append to binary file
-        f = open(UPLOAD_FOLDER + '/' + filename, "at")
-        f.write("AdditionalStuff")
-        f.close()
+        # f = open(UPLOAD_FOLDER + '/' + filename, "ab")
+        # f.write("AdditionalStuff")
+        # f.close()
+        f = open(UPLOAD_FOLDER + '/' + filename, "r")
+        print(f.read())
 
 
 @app.route('/uploads/delete-files')
