@@ -63,7 +63,8 @@ def mutate_files():
         f = open(UPLOAD_FOLDER + '/' + filename, "ab")
         f.write("AdditionalStuff")
         f.close()
-        flash('Files mutated!')
+
+    flash('Files mutated!')
 
     return redirect(url_for('list_uploaded_files'))
 
