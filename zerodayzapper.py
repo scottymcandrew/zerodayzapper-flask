@@ -1,6 +1,7 @@
 import os
 from flask import *
 from werkzeug.utils import secure_filename
+import hashlib
 
 UPLOAD_FOLDER = '/var/www/html/zerodayzapper/uploads'
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'exe', ''}
@@ -32,6 +33,7 @@ def upload_file():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('Successfully uploaded file')
             return redirect(url_for('list_uploaded_files'))
 
     return render_template('index.html')
@@ -61,6 +63,7 @@ def mutate_files():
         f = open(UPLOAD_FOLDER + '/' + filename, "ab")
         f.write("AdditionalStuff")
         f.close()
+        flash('Files mutated!')
 
     return redirect(url_for('list_uploaded_files'))
 
