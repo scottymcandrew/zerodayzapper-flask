@@ -85,7 +85,7 @@ def vt_download():
                         default='./malware-hashlist.txt',
                         help='path to a file containing the hashes')
     parser.add_argument('--output',
-                        default='./vt-downloads/',
+                        default='./uploads/',
                         help='path to output directory')
     parser.add_argument('--workers',
                         type=int,
