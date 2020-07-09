@@ -53,10 +53,7 @@ def list_uploaded_files():
             "file_hash": file_hash
         }
         files_list.append(file_details)
-        print(file_details)
 
-    print(files_list)
-    print(files_list[0]["file_name"])
     return render_template('uploads.html', files_list=files_list)
 
 
