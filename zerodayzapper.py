@@ -110,6 +110,8 @@ def vt_download():
     loop.run_until_complete(asyncio.gather(*_worker_tasks))
     loop.close()
 
+    return redirect(url_for('list_uploaded_files'))
+
 
 @app.route('/uploads/exe-files')
 def exe_files():
