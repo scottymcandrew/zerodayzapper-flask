@@ -43,18 +43,21 @@ def upload_file():
 
 @app.route('/uploads')
 def list_uploaded_files():
-    files_dict = {}
+    files_list = []
     for filename in os.listdir(UPLOAD_FOLDER):
         file_path = UPLOAD_FOLDER + "/" + filename
         file_hash = get_file_hash(file_path)
         # list_of_files[filename] = filename
-        files_dict = {
+        file_details = {
             "file_name": filename,
             "file_hash": file_hash
         }
-        print(files_dict)
+        files_list.append(file_details)
+        print(file_details)
 
-    return render_template('uploads.html', **files_dict)
+    print(files_list)
+    print(files_list[0]["file_name"])
+    return render_template('uploads.html', files_list=files_list)
 
 
 def get_file_hash(file):

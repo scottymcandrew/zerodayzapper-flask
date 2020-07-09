@@ -7,9 +7,13 @@
     <h2>Here are the current list of files that have been uploaded</h2>
     <br>
 
-    <a href="{{ url_for('exe_files') }}" class="btn btn-primary" role="button">Add EXE to files</a>
-    <a href="{{ url_for('mutate_files') }}" class="btn btn-warning" role="button">Mutate all files</a>
-    <a href="{{ url_for('delete_files') }}" class="btn btn-danger" role="button">Delete ALL files</a>
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{{ url_for('exe_files') }}" class="btn btn-primary" role="button">Add EXE to files</a>
+            <a href="{{ url_for('mutate_files') }}" class="btn btn-warning" role="button">Mutate all files</a>
+            <a href="{{ url_for('delete_files') }}" class="btn btn-danger" role="button">Delete ALL files</a>
+        </div>
+    </div>
 
     {#    <ul class="list-group list-group-flush">#}
     {#        {% for item in files_dict %}#}
@@ -17,7 +21,7 @@
     {#        {% endfor %}#}
     {#    </ul>#}
 
-    <table class="table">
+    <table class="table table-bordered table-dark mt-3">
         <thead>
         <tr>
             <th scope="col">File Name</th>
@@ -26,15 +30,11 @@
         </thead>
 
         <tbody>
-        {% for dict_item in files_dict %}
-            <th scope="row">{{ dict_item["file_name"] }}</th>
-            <td>{{ dict_item["file_hash"] }}</td>
-{#            {% for key, value in dict_item.items() %}#}
-{#                <tr>#}
-{#                    <th scope="row">{{ key }}</th>#}
-{#                    <td>{{ value }}</td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
+        {% for x in files_list %}
+            <tr>
+                <th scope="row"><a href="{{ url_for('list_uploaded_files') }}/{{ x["file_name"] }}">{{ x["file_name"] }}</a></th>
+                <td>{{ x["file_hash"] }}</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
