@@ -6,7 +6,6 @@ import argparse
 import asyncio
 import sys
 import vt
-from dotenv import load_dotenv
 
 UPLOAD_FOLDER = os.path.join(os.environ.get("ZDZ_DIR"), "uploads")
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'exe', ''}
@@ -82,10 +81,10 @@ def vt_download():
     #      default='./apikey',
     #      help='your VirusTotal API key')
     parser.add_argument('--input',
-                        default='./malware-hashlist.txt',
+                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/malware-hashlist.txt',
                         help='path to a file containing the hashes')
     parser.add_argument('--output',
-                        default='./uploads/',
+                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/uploads',
                         help='path to output directory')
     parser.add_argument('--workers',
                         type=int,
@@ -99,7 +98,8 @@ def vt_download():
         input_file = open(args.input)
     else:
         input_file = sys.stdin
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     queue = asyncio.Queue(loop=loop)
     loop.create_task(read_hashes(queue, input_file))
     _worker_tasks = []
@@ -149,22 +149,18 @@ def uploaded_file(filename):
                                filename)
 
 
-"""
-Function used in the VirusTotal downloader feature
-"""
-
-
 async def read_hashes(queue, input_file):
+    """
+    Function used in the VirusTotal downloader feature
+    """
     for file_hash in input_file:
         await queue.put(file_hash.strip('\n'))
 
 
-"""
-Function used in the VirusTotal downloader feature
-"""
-
-
 async def download_files(queue, args):
+    """
+    Function used in the VirusTotal downloader feature
+    """
     async with vt.Client(os.environ.get('VT_API_KEY')) as client:
         while not queue.empty():
             file_hash = await queue.get()
