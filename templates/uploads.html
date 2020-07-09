@@ -11,10 +11,34 @@
     <a href="{{ url_for('mutate_files') }}" class="btn btn-warning" role="button">Mutate all files</a>
     <a href="{{ url_for('delete_files') }}" class="btn btn-danger" role="button">Delete ALL files</a>
 
-    <ul class="list-group list-group-flush">
-        {% for filename in list_of_files %}
-            <li class="list-group-item"><a href="{{ url_for('list_uploaded_files') }}/{{ filename }}">{{ filename }}</a></li>
+    {#    <ul class="list-group list-group-flush">#}
+    {#        {% for item in files_dict %}#}
+    {#            <li class="list-group-item"><a href="{{ url_for('list_uploaded_files') }}/{{ item[file_name] }}">{{ item[file_name] }}</a></li>#}
+    {#        {% endfor %}#}
+    {#    </ul>#}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">File Name</th>
+            <th scope="col">File Hash</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for dict_item in files_dict %}
+            <th scope="row">{{ dict_item["file_name"] }}</th>
+            <td>{{ dict_item["file_hash"] }}</td>
+{#            {% for key, value in dict_item.items() %}#}
+{#                <tr>#}
+{#                    <th scope="row">{{ key }}</th>#}
+{#                    <td>{{ value }}</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+
+
 
 {% endblock %}

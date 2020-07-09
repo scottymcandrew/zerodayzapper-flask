@@ -3,7 +3,8 @@ from flask import *
 from werkzeug.utils import secure_filename
 import hashlib
 
-UPLOAD_FOLDER = '/var/www/html/zerodayzapper/uploads'
+
+UPLOAD_FOLDER = os.path.join(os.environ.get("ZDZ_DIR"), "uploads")
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'exe', ''}
 
 app = Flask(__name__)
@@ -42,11 +43,31 @@ def upload_file():
 
 @app.route('/uploads')
 def list_uploaded_files():
-    list_of_files = {}
+    files_dict = {}
     for filename in os.listdir(UPLOAD_FOLDER):
-        list_of_files[filename] = filename
+        file_path = UPLOAD_FOLDER + "/" + filename
+        file_hash = get_file_hash(file_path)
+        # list_of_files[filename] = filename
+        files_dict = {
+            "file_name": filename,
+            "file_hash": file_hash
+        }
+        print(files_dict)
 
-    return render_template('uploads.html', list_of_files=list_of_files)
+    return render_template('uploads.html', **files_dict)
+
+
+def get_file_hash(file):
+    block_size = 65536  # The size of each read from the file
+
+    file_hash = hashlib.sha256()  # Create the hash object, can use something other than `.sha256()` if you wish
+    with open(file, 'rb') as f:  # Open the file to read it's bytes
+        fb = f.read(block_size)  # Read from the file. Take in the amount declared above
+        while len(fb) > 0:  # While there is still data being read from the file
+            file_hash.update(fb)  # Update the hash
+            fb = f.read(block_size)  # Read the next block from the file
+
+    return file_hash.hexdigest()  # Get the hexadecimal digest of the hash
 
 
 @app.route('/uploads/exe-files')
