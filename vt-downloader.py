@@ -32,17 +32,16 @@ async def download_files(queue, args):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description=program_description)
+    parser = argparse.ArgumentParser()
     #  parser.add_argument('--apikey',
     #      required=False,
     #      default='./apikey',
     #      help='your VirusTotal API key')
     parser.add_argument('--input',
-                        default='./malware-hashlist.txt',
+                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/malware-hashlist.txt',
                         help='path to a file containing the hashes')
     parser.add_argument('--output',
-                        default='./vt-downloads/',
+                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/uploads',
                         help='path to output directory')
     parser.add_argument('--workers',
                         type=int,
@@ -56,7 +55,8 @@ def main():
         input_file = open(args.input)
     else:
         input_file = sys.stdin
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     queue = asyncio.Queue(loop=loop)
     loop.create_task(read_hashes(queue, input_file))
     _worker_tasks = []

@@ -50,7 +50,8 @@ def list_uploaded_files():
     for filename in os.listdir(UPLOAD_FOLDER):
         file_path = UPLOAD_FOLDER + "/" + filename
         file_hash = get_file_hash(file_path)
-        # list_of_files[filename] = filename
+        print('FILE_NAME:' + file_path)
+        print('FILE_HASH:' + file_hash)
         file_details = {
             "file_name": filename,
             "file_hash": file_hash
@@ -113,6 +114,28 @@ def vt_download():
     return redirect(url_for('list_uploaded_files'))
 
 
+async def read_hashes(queue, input_file):
+    """
+    Function used in the VirusTotal downloader feature
+    """
+    for file_hash in input_file:
+        await queue.put(file_hash.strip('\n'))
+
+
+async def download_files(queue, args):
+    """
+    Function used in the VirusTotal downloader feature
+    """
+    async with vt.Client(os.environ.get('VT_API_KEY')) as client:
+        while not queue.empty():
+            file_hash = await queue.get()
+            file_path = os.path.join(args.output, file_hash)
+            with open(file_path, 'wb') as f:
+                await client.download_file_async(file_hash, f)
+            print(file_hash)
+            queue.task_done()
+
+
 @app.route('/uploads/exe-files')
 def exe_files():
     for filename in os.listdir(UPLOAD_FOLDER):
@@ -147,28 +170,6 @@ def delete_files():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
-
-
-async def read_hashes(queue, input_file):
-    """
-    Function used in the VirusTotal downloader feature
-    """
-    for file_hash in input_file:
-        await queue.put(file_hash.strip('\n'))
-
-
-async def download_files(queue, args):
-    """
-    Function used in the VirusTotal downloader feature
-    """
-    async with vt.Client(os.environ.get('VT_API_KEY')) as client:
-        while not queue.empty():
-            file_hash = await queue.get()
-            file_path = os.path.join(args.output, file_hash)
-            with open(file_path, 'wb') as f:
-                await client.download_file_async(file_hash, f)
-            print(file_hash)
-            queue.task_done()
 
 
 if __name__ == '__main__':
