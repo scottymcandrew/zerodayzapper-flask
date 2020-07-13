@@ -1,13 +1,15 @@
 import os
 from flask import *
+import vt
 from werkzeug.utils import secure_filename
 import hashlib
-import argparse
-import asyncio
-import sys
-import vt
+# import argparse
+# import asyncio
+# import sys
+
 
 UPLOAD_FOLDER = os.path.join(os.environ.get("ZDZ_DIR"), "uploads")
+HASH_LIST_FILE = os.path.join(os.environ.get("ZDZ_DIR"), "malware-hashlist.txt")
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'exe', ''}
 
 app = Flask(__name__)
@@ -50,8 +52,6 @@ def list_uploaded_files():
     for filename in os.listdir(UPLOAD_FOLDER):
         file_path = UPLOAD_FOLDER + "/" + filename
         file_hash = get_file_hash(file_path)
-        print('FILE_NAME:' + file_path)
-        print('FILE_HASH:' + file_hash)
         file_details = {
             "file_name": filename,
             "file_hash": file_hash
@@ -76,64 +76,81 @@ def get_file_hash(file):
 
 @app.route('/vt-download')
 def vt_download():
-    parser = argparse.ArgumentParser()
-    #  parser.add_argument('--apikey',
-    #      required=False,
-    #      default='./apikey',
-    #      help='your VirusTotal API key')
-    parser.add_argument('--input',
-                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/malware-hashlist.txt',
-                        help='path to a file containing the hashes')
-    parser.add_argument('--output',
-                        default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/uploads',
-                        help='path to output directory')
-    parser.add_argument('--workers',
-                        type=int,
-                        required=False,
-                        default=4,
-                        help='number of concurrent workers')
-    args = parser.parse_args()
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
-    if args.input:
-        input_file = open(args.input)
-    else:
-        input_file = sys.stdin
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    queue = asyncio.Queue(loop=loop)
-    loop.create_task(read_hashes(queue, input_file))
-    _worker_tasks = []
-    for i in range(args.workers):
-        _worker_tasks.append(
-            loop.create_task(download_files(queue, args)))
-    # Wait until all worker tasks has completed.
-    loop.run_until_complete(asyncio.gather(*_worker_tasks))
-    loop.close()
+    client = vt.Client(os.environ.get('VT_API_KEY'))
+    hash_list = []
+    with open(HASH_LIST_FILE) as f:
+        hash1 = f.readlines()
+        for line in hash1:
+            hash_list.append(line.strip('\n'))
+
+    for h in hash_list:
+        print(h)
+        with open(UPLOAD_FOLDER + '/ ' + h, "wb") as f:
+            client.download_file(h, f)
 
     return redirect(url_for('list_uploaded_files'))
 
 
-async def read_hashes(queue, input_file):
-    """
-    Function used in the VirusTotal downloader feature
-    """
-    for file_hash in input_file:
-        await queue.put(file_hash.strip('\n'))
-
-
-async def download_files(queue, args):
-    """
-    Function used in the VirusTotal downloader feature
-    """
-    async with vt.Client(os.environ.get('VT_API_KEY')) as client:
-        while not queue.empty():
-            file_hash = await queue.get()
-            file_path = os.path.join(args.output, file_hash)
-            with open(file_path, 'wb') as f:
-                await client.download_file_async(file_hash, f)
-            print(file_hash)
-            queue.task_done()
+# @app.route('/vt-download')
+# def vt_download():
+#     parser = argparse.ArgumentParser()
+#     #  parser.add_argument('--apikey',
+#     #      required=False,
+#     #      default='./apikey',
+#     #      help='your VirusTotal API key')
+#     parser.add_argument('--input',
+#                         default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/malware-hashlist.txt',
+#                         help='path to a file containing the hashes')
+#     parser.add_argument('--output',
+#                         default='/Users/sdm/dev/zerodayzapper/zerodayzapper-flask/uploads',
+#                         help='path to output directory')
+#     parser.add_argument('--workers',
+#                         type=int,
+#                         required=False,
+#                         default=4,
+#                         help='number of concurrent workers')
+#     args = parser.parse_args()
+#     if not os.path.exists(args.output):
+#         os.makedirs(args.output)
+#     if args.input:
+#         input_file = open(args.input)
+#     else:
+#         input_file = sys.stdin
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     queue = asyncio.Queue(loop=loop)
+#     loop.create_task(read_hashes(queue, input_file))
+#     _worker_tasks = []
+#     for i in range(args.workers):
+#         _worker_tasks.append(
+#             loop.create_task(download_files(queue, args)))
+#     # Wait until all worker tasks has completed.
+#     loop.run_until_complete(asyncio.gather(*_worker_tasks))
+#     loop.close()
+#
+#     return redirect(url_for('list_uploaded_files'))
+#
+#
+# async def read_hashes(queue, input_file):
+#     """
+#     Function used in the VirusTotal downloader feature
+#     """
+#     for file_hash in input_file:
+#         await queue.put(file_hash.strip('\n'))
+#
+#
+# async def download_files(queue, args):
+#     """
+#     Function used in the VirusTotal downloader feature
+#     """
+#     async with vt.Client(os.environ.get('VT_API_KEY')) as client:
+#         while not queue.empty():
+#             file_hash = await queue.get()
+#             file_path = os.path.join(args.output, file_hash)
+#             with open(file_path, 'wb') as f:
+#                 await client.download_file_async(file_hash, f)
+#             print(file_hash)
+#             queue.task_done()
 
 
 @app.route('/uploads/exe-files')
