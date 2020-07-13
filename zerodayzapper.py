@@ -91,7 +91,7 @@ def vt_download():
 
     for h in hash_list:
         print(h)
-        with open(UPLOAD_FOLDER + '/ ' + h, "wb") as f:
+        with open(UPLOAD_FOLDER + '/' + h, "wb") as f:
             client.download_file(h, f)
 
     return redirect(url_for('list_uploaded_files'))
