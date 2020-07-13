@@ -14,8 +14,9 @@
                     <br>
                     <br>
 
-                <form action="{{ url_for('vt_download') }}"> <input id="fname" name="choco" type="text">
+                <form action="{{ url_for('vt_download') }}" method="POST">
                     <div class="form-group">
+                        <input id="fname" name="choco" type="text">
                         <br>
                         <br>
                         <button type="submit" class="btn btn-danger">Create bad things...</button>
