@@ -86,8 +86,6 @@ def vt_download():
     hash_list = []
     index = 0
     # data = request.form
-    user_file_name = request.form['choco']
-    print(user_file_name)
     with open(HASH_LIST_FILE) as f:
         hash1 = f.readlines()
         for line in hash1:
@@ -96,6 +94,7 @@ def vt_download():
     for h in hash_list:
         index += 1
         if request.method == 'POST':
+            user_file_name = request.form['choco']
             if user_file_name != '':
                 with open(UPLOAD_FOLDER + '/' + user_file_name + "-" + str(index), "wb") as f:
                     client.download_file(h, f)
@@ -103,7 +102,7 @@ def vt_download():
                 with open(UPLOAD_FOLDER + '/' + 'you-did-not-name-me' + "-" + str(index), "wb") as f:
                     client.download_file(h, f)
 
-        else:
+        elif request.method == 'GET':
             with open(UPLOAD_FOLDER + '/' + h, "wb") as f:
                 client.download_file(h, f)
 
