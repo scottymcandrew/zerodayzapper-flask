@@ -24,7 +24,7 @@ app.secret_key = 'supersecretk3y'
 #            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/upload-file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -46,7 +46,13 @@ def upload_file():
     return render_template('index.html')
 
 
-@app.route('/uploads')
+@app.route('/')
+def portal():
+
+    return render_template('portal.html')
+
+
+@app.route('/files')
 def list_uploaded_files():
     files_list = []
     for filename in os.listdir(UPLOAD_FOLDER):

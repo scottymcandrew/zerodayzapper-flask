@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row bg-dark">
+        <div class="col-12 text-center p-4">
+            <img src="{{ url_for('static', filename='images/zdz-y.png') }}" class="img-fluid" alt="Zero Day Zapper!">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <span>
+                <label for="fname">We're going to generate some brand new malware and a brand new malicious website!
+                    <a href="03.html" target="_blank">Why?</a>
+                    <br>
+                    <br>
+                    <br>
+                    What is your favourite chocolate, beer, or colour:</label>
+                    <br>
+                    <br>
+
+                <form action="{{ url_for('vt_download') }}"> <input id="fname" name="choco" type="text">
+                    <div class="form-group">
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-danger">Create bad things...</button>
+                    </div>
+                </form>
+            </span>
+        </div>
+    </div>
+
+{% endblock %}
