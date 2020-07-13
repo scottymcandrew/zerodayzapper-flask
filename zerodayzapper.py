@@ -52,7 +52,7 @@ def portal():
     return render_template('portal.html')
 
 
-@app.route('/files')
+@app.route('/uploads')
 def list_uploaded_files():
     files_list = []
     for filename in os.listdir(UPLOAD_FOLDER):
