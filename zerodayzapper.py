@@ -62,15 +62,18 @@ def transfer_file_ml(filename):
     # crl.perform()
     # crl.close()
     # file.close()
-    url = 'http://10.50.20.40:8000'
+    url = 'http://storage-ml.zerodayzapper.com:8000'
     with open(UPLOAD_FOLDER + '/' + filename, 'rb') as data:
         try:
             requests.put(url, data=data)
             flash('File transferred!')
             return redirect(url_for('list_uploaded_files'))
-        except requests.exceptions.Timeout:
-            flash('Timeout error!')
+        except:
+            flash('The upload was prevented!')
             return redirect(url_for('list_uploaded_files'))
+        # except requests.exceptions.Timeout:
+        #     flash('Timeout error!')
+        #     return redirect(url_for('list_uploaded_files'))
 
 
 @app.route('/transfer-file-no-ml/<filename>')
@@ -87,9 +90,15 @@ def transfer_file_no_ml(filename):
     # crl.close()
     # file.close()
 
-    url = 'http://10.50.20.45:8000'
+    url = 'http://storage-no-ml.zerodayzapper.com:8000'
     with open(UPLOAD_FOLDER + '/' + filename, 'rb') as data:
-        requests.put(url, data=data)
+        try:
+            requests.put(url, data=data)
+            flash('File transferred!')
+            return redirect(url_for('list_uploaded_files'))
+        except:
+            flash('The upload was prevented!')
+            return redirect(url_for('list_uploaded_files'))
 
     return redirect(url_for('list_uploaded_files'))
 
