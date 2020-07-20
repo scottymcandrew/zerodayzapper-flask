@@ -4,6 +4,7 @@ import vt
 from werkzeug.utils import secure_filename
 import hashlib
 import pycurl
+import requests
 # import argparse
 # import asyncio
 # import sys
@@ -49,34 +50,42 @@ def upload_file():
 
 @app.route('/transfer-file-ml/<filename>')
 def transfer_file_ml(filename):
-    crl = pycurl.Curl()
-    crl.setopt(crl.URL, 'http://10.50.20.40:8000')
-
-    file = open(UPLOAD_FOLDER + '/' + filename)
-
-    crl.setopt(crl.UPLOAD, 1)
-    crl.setopt(crl.READDATA, file)
-
-    crl.perform()
-    crl.close()
-    file.close()
+    # crl = pycurl.Curl()
+    # # crl.setopt(crl.URL, 'http://10.50.20.40:8000')
+    # crl.setopt(crl.URL, 'http://storage-ml.zerodayzapper.com:8000')
+    #
+    # crl.setopt(crl.UPLOAD, 1)
+    # file = open(UPLOAD_FOLDER + '/' + filename, 'rb')
+    # print(file)
+    # crl.setopt(crl.READDATA, file)
+    #
+    # crl.perform()
+    # crl.close()
+    # file.close()
+    url = 'http://10.50.20.40:8000'
+    with open(UPLOAD_FOLDER + '/' + filename, 'rb') as data:
+        requests.put(url, data=data)
 
     return redirect(url_for('list_uploaded_files'))
 
 
 @app.route('/transfer-file-no-ml/<filename>')
 def transfer_file_no_ml(filename):
-    crl = pycurl.Curl()
-    crl.setopt(crl.URL, 'http://10.50.20.45:8000')
+    # crl = pycurl.Curl()
+    # # crl.setopt(crl.URL, 'http://10.50.20.45:8000')
+    # crl.setopt(crl.URL, 'http://storage-no-ml.zerodayzapper.com:8000')
+    #
+    # crl.setopt(crl.UPLOAD, 1)
+    # file = open(UPLOAD_FOLDER + '/' + filename, 'rb')
+    # crl.setopt(crl.READDATA, file)
+    #
+    # crl.perform()
+    # crl.close()
+    # file.close()
 
-    file = open(UPLOAD_FOLDER + '/' + filename)
-
-    crl.setopt(crl.UPLOAD, 1)
-    crl.setopt(crl.READDATA, file)
-
-    crl.perform()
-    crl.close()
-    file.close()
+    url = 'http://10.50.20.45:8000'
+    with open(UPLOAD_FOLDER + '/' + filename, 'rb') as data:
+        requests.put(url, data=data)
 
     return redirect(url_for('list_uploaded_files'))
 
