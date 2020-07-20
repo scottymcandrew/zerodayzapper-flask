@@ -21,6 +21,7 @@
         <tr>
             <th scope="col">File Name</th>
             <th scope="col">File Hash</th>
+            <th scope="col">Transfer!</th>
         </tr>
         </thead>
 
@@ -29,6 +30,7 @@
             <tr>
                 <th scope="row"><a href="{{ url_for('list_uploaded_files') }}/{{ x["file_name"] }}">{{ x["file_name"] }}</a></th>
                 <td>{{ x["file_hash"] }}</td>
+                <td><a href="{{ url_for('transfer_file_ml', filename=x["file_name"]) }}" class="btn btn-primary">ML! :-)</a><a href="{{ url_for('transfer_file_no_ml', filename=x["file_name"]) }}" class="btn btn-danger">No ML :-(</a></td>
             </tr>
         {% endfor %}
         </tbody>

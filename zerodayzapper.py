@@ -3,6 +3,7 @@ from flask import *
 import vt
 from werkzeug.utils import secure_filename
 import hashlib
+import pycurl
 # import argparse
 # import asyncio
 # import sys
@@ -44,6 +45,40 @@ def upload_file():
             return redirect(url_for('list_uploaded_files'))
 
     return render_template('index.html')
+
+
+@app.route('/transfer-file-ml/<filename>')
+def transfer_file_ml(filename):
+    crl = pycurl.Curl()
+    crl.setopt(crl.URL, 'http://10.50.20.40:8000')
+
+    file = open(UPLOAD_FOLDER + '/' + filename)
+
+    crl.setopt(crl.UPLOAD, 1)
+    crl.setopt(crl.READDATA, file)
+
+    crl.perform()
+    crl.close()
+    file.close()
+
+    return redirect(url_for('list_uploaded_files'))
+
+
+@app.route('/transfer-file-no-ml/<filename>')
+def transfer_file_no_ml(filename):
+    crl = pycurl.Curl()
+    crl.setopt(crl.URL, 'http://10.50.20.45:8000')
+
+    file = open(UPLOAD_FOLDER + '/' + filename)
+
+    crl.setopt(crl.UPLOAD, 1)
+    crl.setopt(crl.READDATA, file)
+
+    crl.perform()
+    crl.close()
+    file.close()
+
+    return redirect(url_for('list_uploaded_files'))
 
 
 @app.route('/')
