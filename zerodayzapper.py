@@ -52,6 +52,12 @@ def portal():
     return render_template('portal.html')
 
 
+@app.route('/why')
+def why():
+
+    return render_template('why.html')
+
+
 @app.route('/uploads')
 def list_uploaded_files():
     files_list = []

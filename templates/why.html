@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="vw-100 vh-100">
+                <img src="{{ url_for('static', filename='images/why-01.png') }}" alt="Slide 1" class="mx-auto d-block">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="vw-100 vh-100">
+                <img src="{{ url_for('static', filename='images/why-02.png') }}" alt="Slide 2"
+                     class="mx-auto d-block">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="vw-100 vh-100">
+                <img src="{{ url_for('static', filename='images/why-03.png') }}" alt="Slide 2"
+                     class="mx-auto d-block">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
