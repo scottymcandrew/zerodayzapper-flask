@@ -3,7 +3,6 @@ from flask import *
 import vt
 from werkzeug.utils import secure_filename
 import hashlib
-import pycurl
 import requests
 # import argparse
 # import asyncio
@@ -68,8 +67,8 @@ def transfer_file_ml(filename):
             requests.put(url, data=data)
             flash('File transferred!')
             return redirect(url_for('list_uploaded_files'))
-        except:
-            flash('The upload was prevented!')
+        except Exception as e:
+            flash('The upload was prevented!..... ' + str(e))
             return redirect(url_for('list_uploaded_files'))
         # except requests.exceptions.Timeout:
         #     flash('Timeout error!')
@@ -96,22 +95,18 @@ def transfer_file_no_ml(filename):
             requests.put(url, data=data)
             flash('File transferred!')
             return redirect(url_for('list_uploaded_files'))
-        except:
-            flash('The upload was prevented!')
+        except Exception as e:
+            flash('The upload was prevented!..... ' + str(e))
             return redirect(url_for('list_uploaded_files'))
-
-    return redirect(url_for('list_uploaded_files'))
 
 
 @app.route('/')
 def portal():
-
     return render_template('portal.html')
 
 
 @app.route('/why')
 def why():
-
     return render_template('why.html')
 
 
