@@ -17,7 +17,7 @@ multidict==4.7.6
 olefile==0.46
 packaging==20.4
 pluggy==0.13.1
-py==1.9.0
+py==1.10.0
 pycurl==7.43.0.5
 pyparsing==2.4.7
 pytest==5.4.3
